@@ -3,6 +3,7 @@ from io import BytesIO
 from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
+import platform
 
 from aiogram import Router, types, F
 from aiogram.filters import Command
@@ -15,6 +16,29 @@ os.makedirs("templates", exist_ok=True)
 
 # Роутер для команды /zayvaru
 zayvaru_router = Router()
+
+def get_font(size):
+    """
+    Получает шрифт в зависимости от операционной системы
+    """
+    system = platform.system().lower()
+    try:
+        if system == "linux":
+            # Пробуем разные шрифты, которые обычно есть в Ubuntu
+            font_paths = [
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+                "/usr/share/fonts/truetype/ubuntu/Ubuntu-R.ttf"
+            ]
+            for font_path in font_paths:
+                if os.path.exists(font_path):
+                    return ImageFont.truetype(font_path, size)
+        elif system == "windows":
+            return ImageFont.truetype("arial.ttf", size)
+    except Exception:
+        pass
+    
+    return ImageFont.load_default()
 
 # Определяем состояния FSM
 class ZayvaruForm(StatesGroup):
@@ -67,22 +91,12 @@ async def create_complaint_image(user_data: str) -> BytesIO:
     draw = ImageDraw.Draw(image)
     
     # Загружаем шрифт (используем системный шрифт)
-    try:
-        # Используем стандартные шрифты
-        title_font = ImageFont.truetype("arial.ttf", 18)
-        header_font = ImageFont.truetype("arial.ttf", 14)
-        body_font = ImageFont.truetype("arial.ttf", 14)
-        small_font = ImageFont.truetype("arial.ttf", 12)
-        button_font = ImageFont.truetype("arial.ttf", 14)
-        caption_font = ImageFont.truetype("arial.ttf", 11)
-    except IOError:
-        # Если шрифт не найден, используем шрифт по умолчанию
-        title_font = ImageFont.load_default()
-        header_font = ImageFont.load_default()
-        body_font = ImageFont.load_default()
-        small_font = ImageFont.load_default()
-        button_font = ImageFont.load_default()
-        caption_font = ImageFont.load_default()
+    title_font = get_font(18)
+    header_font = get_font(14)
+    body_font = get_font(14)
+    small_font = get_font(12)
+    button_font = get_font(14)
+    caption_font = get_font(11)
     
     # --- ОСНОВНЫЕ ЭЛЕМЕНТЫ ФОРМЫ ---
     
