@@ -107,7 +107,7 @@ async def create_complaint_image(user_data: str) -> BytesIO:
     
     # Заголовок с красной звездочкой
     draw.text((form_x, form_y), "Текст обращения:", font=title_font, fill=(0, 0, 0))
-    draw.text((form_x + 150, form_y), "*", font=title_font, fill=(255, 0, 0))  # Сдвинута правее
+    draw.text((form_x + 180, form_y), "*", font=title_font, fill=(255, 0, 0))  # Сдвинута правее
     form_y += 25
     
     # Рисуем рамку текстового поля (повторяем точно как на скриншоте)
@@ -183,7 +183,7 @@ async def create_complaint_image(user_data: str) -> BytesIO:
     
     # Поле "Введите текст с изображения"
     draw.text((form_x, form_y), "Введите текст с изображения:", font=title_font, fill=(0, 0, 0))
-    draw.text((form_x + 210, form_y), "*", font=title_font, fill=(255, 0, 0))
+    draw.text((form_x + 240, form_y), "*", font=title_font, fill=(255, 0, 0))
     form_y += 25
     
     # Поле для ввода капчи
