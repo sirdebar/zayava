@@ -183,7 +183,7 @@ async def create_complaint_image(user_data: str) -> BytesIO:
     
     # Поле "Введите текст с изображения"
     draw.text((form_x, form_y), "Введите текст с изображения:", font=title_font, fill=(0, 0, 0))
-    draw.text((form_x + 240, form_y), "*", font=title_font, fill=(255, 0, 0))
+    draw.text((form_x + 280, form_y), "*", font=title_font, fill=(255, 0, 0))
     form_y += 25
     
     # Поле для ввода капчи
